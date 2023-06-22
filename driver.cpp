@@ -4,9 +4,14 @@
 #include <iostream>
 #include "vec3.h"
 #include "canvas.h"
+#include <math.h>
 using namespace std;
 
 int main(){
+
+     canvas c(80,20);
+    //c.screenToPPM();
+
     //cout << "Hello world";
     point3 something(1,1,1);
     point3 something1(1,1,2);

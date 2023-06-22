@@ -6,29 +6,49 @@
 
 class canvas{
     public:
-        static const int MAX_HEIGHT = 2160;
-        static const int MAX_WIDTH = 3840;
-        int width;
-        int height;
-        color screen[MAX_HEIGHT][MAX_WIDTH];
-        canvas(int h, int w) : height(h), width(w) { color screen[height][width]; };
-        void writePixel(int x, int y, color c){ screen[y][x] = c; }
-        color pixelAt(int x, int y){ return screen[y][x]; }
+    int width;
+    int height;
+    color** screen;
 
-        void screenToPPM(){
-            std::ofstream outputFile("rendering.ppm");
-            outputFile << "P3" << std::endl;
-            outputFile << width << " " << height << std::endl;
-            outputFile << 255 << std::endl;
-            for(int i = 0; i < height; i++){
-                for(int j = 0; j < width; j++){
-                    outputFile << (screen[i][j] * 255) << " ";
-                }
-                outputFile << std::endl;
-            }
-            outputFile << "\n";
+    canvas(int h, int w) : width(w), height(h){
+        screen = new color*[height];
+        for (int i = 0; i < height; i++) {
+            screen[i] = new color[width];
         }
+    }
 
+    ~canvas() {
+        for (int i = 0; i < height; ++i){
+            delete[] screen[i];
+        }
+        delete[] screen;
+    }
+
+    void writePixel(int x, int y, color c){
+        if (x >= 0 && x < width && y >= 0 && y < height){ screen[y][x] = c; }
+    }
+
+    color pixelAt(int x, int y) {
+        if (x >= 0 && x < width && y >= 0 && y < height){ return screen[y][x]; }
+        return color(0.0, 0.0, 0.0);
+    }
+
+    void screenToPPM(){                                                             //Function to convert the screen/canvas to a PPM file
+            std::ofstream outputFile("rendering.ppm");                                  //Output everything to a file called rendering
+            outputFile << "P3" << std::endl;                                            //Some PPM formatting things, begin with P3
+            outputFile << width << " " << height << std::endl;                          //Record the width and the height of the image
+            outputFile << 255 << std::endl;                                             //255 = max color value
+            for(int i = 0; i < height; i++){                                            //Begin double for loop to iterate through all elements of the 2D matrix, iterate through the rows of the matrix
+                for(int j = 0; j < width; j++){                                         //Begin the second part of the double for loop to iterate through the columns of the matrix
+                    outputFile << static_cast<int>(screen[i][j].red() * 255) << " ";
+                    outputFile << static_cast<int>(screen[i][j].green() * 255) << " ";
+                    outputFile << static_cast<int>(screen[i][j].blue() * 255) << " ";
+                          //Output the value of the screen multiplied by 255
+                }
+                outputFile << std::endl;                                                //Create a newline/break for every single row of the matrix
+            }
+            outputFile << "\n";                                                         //End the PPM file with a newline character "\n"
+    }      
 };
 
 #endif

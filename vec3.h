@@ -2,7 +2,7 @@
 #ifndef VEC3_H              //Declare header file
 #define VEC3_H              //Define header file
 #include <iostream>         //The classic, include iostream for some basic functionality
-
+#include <math.h>
 class vec3{
     public:
         /* VARIABLES SECTION */
@@ -43,6 +43,7 @@ class vec3{
         vec3    operator*(const double ve)  const { return vec3(v[0] * ve, v[1] * ve, v[2] * ve, v[3]); }                                                       //Overload "*" operator to multiply the entire array by a constant scalar value
         vec3    operator/(const double ve)  const { return vec3(v[0] / ve, v[1] / ve, v[2] / ve, v[3]); }                                                       //Overload "/" operator to divide the entire array by a constant scalar value
         bool    operator==(const vec3& ve)  const { return equals(v[0], ve.v[0]) && equals(v[1], ve.v[1]) && equals(v[2], ve.v[2]) && equals(v[3], ve.v[3]); }  //Overload "==" operator to compare element-wise each element of the array by calling the equals function, which allows for a slight epsilon delta for rounding floating point numbers
+        bool    operator!=(const vec3& ve)  const { return !operator==(ve); }
         vec3&   operator=(const vec3& ve)         { v[0] = ve.v[0]; v[1] = ve.v[1]; v[2] = ve.v[2];    return *this; }                                          //Overload "=" operator to element-wise set all of the elements of one point3/vec3 to another
         friend std::ostream& operator<<(std::ostream& out, const vec3& ve) { return out << ve.v[0] << ' ' << ve.v[1] << ' ' << ve.v[2]; }                       //Overload "<<" operator to element-wise print out the entire array
         inline vec3& operator-(){ v[0] = -v[0]; v[1] = -v[1]; v[2] = -v[2]; return *this; }                                                                     //Overload "-" operator to element-wise negate the elements in the array
