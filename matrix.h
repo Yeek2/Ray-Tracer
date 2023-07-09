@@ -3,21 +3,21 @@
 #include "vec3.h"
 
 class matrix{
-    public:                     //Public declaration
-        double** matrix2;
-        int n;
-        int dim(){ return n; }
-        matrix(int dim) : n(dim){
-            matrix2 = new double*[n];
-            for(int i = 0; i < n; i++) {
-                matrix2[i] = new double[n];
+    public:                                         //Public declaration
+        double** matrix2;                           //Instantiation of matrix
+        int n;                                      //size of the square matrix (nxn)
+        int dim(){ return n; }                      //Method for getting the dimension of the matrix
+        matrix(int dim) : n(dim){                   //Matrix constructor which takes in the dimension to dynamically allocate 
+            matrix2 = new double*[n];               //Initialize an array of pointers of size n
+            for(int i = 0; i < n; i++) {            //For each element in the pointers array,
+                matrix2[i] = new double[n];         //set each of the elements in the array to a double array of size n
             }
         }
 
-        matrix& operator=(const std::initializer_list<std::initializer_list<double>>& values) {
-            if (values.size() != n) { throw std::invalid_argument("Invalid dimensions"); }
-            for (int row = 0; row < n; row++) {
-                if (values.begin()[row].size() != n){ 
+        matrix& operator=(const std::initializer_list<std::initializer_list<double>>& values) {         //Overloading the = operator to allow for an list of lists to initialize a matrix class
+            if (values.size() != n) { throw std::invalid_argument("Invalid dimensions"); }              //Bounds check the matrix to ensure that the initializer matrix isn't too large
+            for (int row = 0; row < n; row++) {                                                         //Iterate through all of the rows of the matrix
+                if (values.begin()[row].size() != n){                                                   //
                     throw std::invalid_argument("Invalid dimensions"); 
                 }
                 for (int col = 0; col < n; col++){
