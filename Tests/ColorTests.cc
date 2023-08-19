@@ -1,10 +1,10 @@
-//To make the test exe: g++ -std=c++17 ColorTests.cc -lgtest -lgtest_main -o b
-//To run: ./a
+//To make the test exe: g++ -std=c++17 ColorTests.cc -lgtest -lgtest_main -o ColorTests
+//To run: ./ColorTests
 
 #include <gtest/gtest.h>
 #include <math.h>
-#include "vec3.h"
-#include "canvas.h"
+#include "../doth/vec3.h"
+#include "../doth/canvas.h"
 
 
 

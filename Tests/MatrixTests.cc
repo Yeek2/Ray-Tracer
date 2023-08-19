@@ -1,8 +1,8 @@
-//To make the test exe: g++ -std=c++17 MatrixTests.cc -lgtest -lgtest_main -o a
-//To run: ./a
+//To make the test exe: g++ -std=c++17 MatrixTests.cc -lgtest -lgtest_main -o MatrixTests
+//To run: ./MatrixTests
 #include <gtest/gtest.h>
-#include "vec3.h"
-#include "matrix.h"
+#include "../vec3.h"
+#include "../matrix.h"
 
 TEST(MatrixTests, MatrixInitialization){
     std::cout << "Initializing a 3x3 matrix of digits 1-9\n";

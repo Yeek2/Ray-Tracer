@@ -1,7 +1,7 @@
-//To make the test exe: g++ -std=c++17 hello_test.cc -lgtest -lgtest_main -o a
-//To run: ./a
+//To make the test exe: g++ -std=c++17 VectorTests.cc -lgtest -lgtest_main -o VectorTests
+//To run: ./VectorTests
 #include <gtest/gtest.h>
-#include "vec3.h"
+#include "../doth/vec3.h"
 
 // Demonstrate some basic assertions.
 TEST(HelloTest, BasicAssertions) {
