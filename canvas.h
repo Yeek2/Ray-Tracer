@@ -33,7 +33,7 @@ class canvas{
         return color(0.0, 0.0, 0.0);
     }
 
-    void screenToPPM(){                                                             //Function to convert the screen/canvas to a PPM file
+    void screenToPPM(){                                                                 //Function to convert the screen/canvas to a PPM file
             std::ofstream outputFile("rendering.ppm");                                  //Output everything to a file called rendering
             outputFile << "P3" << std::endl;                                            //Some PPM formatting things, begin with P3
             outputFile << width << " " << height << std::endl;                          //Record the width and the height of the image

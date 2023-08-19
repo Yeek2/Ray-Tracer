@@ -2,65 +2,90 @@
 #define MATRIX_H
 #include "vec3.h"
 
-class matrix{
+class Matrix{
     public:                                         //Public declaration
-        double** matrix2;                           //Instantiation of matrix
-        int n;                                      //size of the square matrix (nxn)
+        double** matrixx;                           //Instantiation of matrix pointer to pointer
+        int n;                                      //size of the square matrix (n x n)
         int dim(){ return n; }                      //Method for getting the dimension of the matrix
-        matrix(int dim) : n(dim){                   //Matrix constructor which takes in the dimension to dynamically allocate 
-            matrix2 = new double*[n];               //Initialize an array of pointers of size n
+        Matrix(int dim) : n(dim){                   //Matrix constructor which takes in the dimension to dynamically allocate 
+            matrixx = new double*[n];               //Initialize an array of pointers of size n
             for(int i = 0; i < n; i++) {            //For each element in the pointers array,
-                matrix2[i] = new double[n];         //set each of the elements in the array to a double array of size n
+                matrixx[i] = new double[n];         //set each of the elements in the array to a double array of size n
             }
         }
 
-        matrix& operator=(const std::initializer_list<std::initializer_list<double>>& values) {         //Overloading the = operator to allow for an list of lists to initialize a matrix class
-            if (values.size() != n) { throw std::invalid_argument("Invalid dimensions"); }              //Bounds check the matrix to ensure that the initializer matrix isn't too large
+
+        //Overloading the equals or assignment operator. This operator can take an initalizer list of initializer lists to assign a matrix inline, like so:
+        // A = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16} };
+        Matrix& operator=(const std::initializer_list<std::initializer_list<double>>& values) {         //Overloading the = operator to allow for an list of lists to initialize a matrix class
+            if (values.size() != n) {throw std::invalid_argument("Invalid dimensions, too many rows");} //Bounds check the matrix to ensure that the initializer matrix isn't too large
             for (int row = 0; row < n; row++) {                                                         //Iterate through all of the rows of the matrix
-                if (values.begin()[row].size() != n){                                                   //
-                    throw std::invalid_argument("Invalid dimensions"); 
+                if (values.begin()[row].size() != n){                                                   //Check how many columns (how many elements in each row there are)
+                    throw std::invalid_argument("Invalid dimensions, too many columns");                //Throw error
                 }
-                for (int col = 0; col < n; col++){
-                    matrix2[row][col] = values.begin()[row].begin()[col];
+                for (int col = 0; col < n; col++){                                                      //For loop to iterate through all columns
+                    matrixx[row][col] = values.begin()[row].begin()[col];                               //Assign them properly 
                 }
             }
-            return *this;
+            return *this;                                                                               //Return the instantiated matrix
         }
 
-        bool operator==(const matrix& m) const {
-            for(int row = 0; row < n; row++){
-                for(int col = 0; col < n; col++){
-                    if(matrix2[row][col] != m.matrix2[row][col]){
-                        return false;
+        bool operator==(const Matrix& m) const {                                                        //Equality operator overload
+            for(int row = 0; row < n; row++){                                                           //Iterate through rows
+                for(int col = 0; col < n; col++){                                                       //Iterate through columns
+                    if(matrixx[row][col] != m.matrixx[row][col]){                                       //Check if they're not equal
+                        return false;                                                                   //Return false if they aren't
                     }
                 }
             }
-            return true;
+            return true;                                                                                //If they made it here, return true
         }
-        bool operator!=(const matrix& m) const { return !operator==(m); }
-        matrix matrixMultiply(const matrix& A, const matrix& B) const {
-            int dim = A.n;
-            matrix C(dim);
-            for(int row = 0; row < dim; row++){
-                for(int col = 0; col < dim; col++){
-                    C[row][col] = 
-                    A.matrix2[0][col] + B.matrix2[0][col] +
-                    A.matrix2[1][col] + B.matrix2[1][col] +
-                    A.matrix2[2][col] + B.matrix2[2][col] +
-                    A.matrix2[3][col] + B.matrix2[3][col];
+        bool operator!=(const Matrix& m) const { return !operator==(m); }                               //Not equal operator, run the equal operator and invert it
 
-                }
-            }
-            return C;
-        }
+        
 
         double* operator[](int index) {
             if (index < 0 || index >= n) { throw std::out_of_range("Invalid index"); }
-                return matrix2[index];
+                return matrixx[index];
         }
         
 
 
 };
+
+Matrix matrixMultiply(const Matrix& A, const Matrix& B) {                                 //Operation to element-wise multiply matrices together
+            int dim = A.n;                                                                              //Set the dimension of the new matrix to be the same as one of the input matrices
+            if (dim != 4) {throw std::invalid_argument("Matrix must be 4 x 4");}                        //Ensure matrix is of dim(4)
+            Matrix C(dim);                                                                              //Create a new matrix with the same dimension
+            for(int row = 0; row < dim; row++){                                                         //Iterate through rows
+                for(int col = 0; col < dim; col++){                                                     //Iterate through columns
+                    C[row][col] =                                                                       //Set each element of the C matrix
+                    A.matrixx[row][0] * B.matrixx[0][col] +                                             //
+                    A.matrixx[row][1] * B.matrixx[1][col] +
+                    A.matrixx[row][2] * B.matrixx[2][col] +
+                    A.matrixx[row][3] * B.matrixx[3][col];
+
+                }
+            }
+            return C;
+}
+
+std::vector<double> matrixMultiply(const Matrix& A, std::vector<double> b) {
+    int dim = A.n;
+    
+    if (dim != 4) throw std::invalid_argument("Matrix must be 4 x 4");
+    std::vector<double> c(dim, 0.0);
+    
+    for (int row = 0; row < dim; row++) {
+        c[row] =
+            A.matrixx[row][0] * b[0] +
+            A.matrixx[row][1] * b[1] +
+            A.matrixx[row][2] * b[2] +
+            A.matrixx[row][3] * b[3];
+    }
+    
+    return c;
+}
+
 
 #endif
