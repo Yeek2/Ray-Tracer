@@ -1,9 +1,9 @@
-//To compile, do g++ -std=c++17 driver.cpp
-//to run, do ./a.out
+//To compile, do g++ -std=c++17 driver.cpp -o driver
+//to run, do ./driver
 
 #include <iostream>
-#include "vec3.h"
-#include "canvas.h"
+#include "doth/vec3.h"
+#include "doth/canvas.h"
 #include <math.h>
 using namespace std;
 
